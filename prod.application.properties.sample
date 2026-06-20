@@ -1,0 +1,8 @@
+quarkus.http.host=127.0.0.1
+quarkus.http.port=2157
+ollama.host=http://localhost:11434
+ollama.api.key=REQUIRED-ONLY-IF-OLLAMA-PROXY-REQUIRES-IT
+ollama.model=glm-4.7:cloud
+ollama.cooldown.ms=5000
+ollama.request.cap=2000
+ollama.max.user.prompt.length=1000

@@ -59,7 +59,7 @@ public class BinaryOperatorBuilder {
             contract = new OperatorContract(
                     false, false, false, false, false,
                     false, false, false, false, false,
-                    false, false, false
+                    false, false, false, false
             );
         }
         return new BinaryOperator("F" + idProvider.getNextId(), name, List.copyOf(lhsBuffer), List.copyOf(rhsBuffer), contract);

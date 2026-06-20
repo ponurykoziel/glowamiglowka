@@ -13,6 +13,7 @@ public final class OperatorContract {
     private final boolean associative;
     private final boolean cancellative;
     private final boolean distributive;
+    private final boolean transitive;
     private final boolean identityElement;
     private final boolean inverseElement;
     private final boolean absorbingElement;
@@ -28,6 +29,7 @@ public final class OperatorContract {
             boolean associative,
             boolean cancellative,
             boolean distributive,
+            boolean transitive,
             boolean identityElement,
             boolean inverseElement,
             boolean absorbingElement) {
@@ -41,6 +43,7 @@ public final class OperatorContract {
         this.associative = associative;
         this.cancellative = cancellative;
         this.distributive = distributive;
+        this.transitive = transitive;
         this.identityElement = identityElement;
         this.inverseElement = inverseElement;
         this.absorbingElement = absorbingElement;
@@ -86,6 +89,10 @@ public final class OperatorContract {
         return distributive;
     }
 
+    public boolean isTransitive() {
+        return transitive;
+    }
+
     public boolean isIdentityElement() {
         return identityElement;
     }
@@ -102,91 +109,98 @@ public final class OperatorContract {
         return new OperatorContract(
                 reflexive, irreflexive, antisymmetric, asymmetric, idempotent,
                 involutive, monotonic, associative, cancellative, distributive,
-                identityElement, inverseElement, absorbingElement);
+                transitive, identityElement, inverseElement, absorbingElement);
     }
 
     public OperatorContract withIrreflexive(boolean irreflexive) {
         return new OperatorContract(
                 reflexive, irreflexive, antisymmetric, asymmetric, idempotent,
                 involutive, monotonic, associative, cancellative, distributive,
-                identityElement, inverseElement, absorbingElement);
+                transitive, identityElement, inverseElement, absorbingElement);
     }
 
     public OperatorContract withAntisymmetric(boolean antisymmetric) {
         return new OperatorContract(
                 reflexive, irreflexive, antisymmetric, asymmetric, idempotent,
                 involutive, monotonic, associative, cancellative, distributive,
-                identityElement, inverseElement, absorbingElement);
+                transitive, identityElement, inverseElement, absorbingElement);
     }
 
     public OperatorContract withAsymmetric(boolean asymmetric) {
         return new OperatorContract(
                 reflexive, irreflexive, antisymmetric, asymmetric, idempotent,
                 involutive, monotonic, associative, cancellative, distributive,
-                identityElement, inverseElement, absorbingElement);
+                transitive, identityElement, inverseElement, absorbingElement);
     }
 
     public OperatorContract withIdempotent(boolean idempotent) {
         return new OperatorContract(
                 reflexive, irreflexive, antisymmetric, asymmetric, idempotent,
                 involutive, monotonic, associative, cancellative, distributive,
-                identityElement, inverseElement, absorbingElement);
+                transitive, identityElement, inverseElement, absorbingElement);
     }
 
     public OperatorContract withInvolutive(boolean involutive) {
         return new OperatorContract(
                 reflexive, irreflexive, antisymmetric, asymmetric, idempotent,
                 involutive, monotonic, associative, cancellative, distributive,
-                identityElement, inverseElement, absorbingElement);
+                transitive, identityElement, inverseElement, absorbingElement);
     }
 
     public OperatorContract withMonotonic(boolean monotonic) {
         return new OperatorContract(
                 reflexive, irreflexive, antisymmetric, asymmetric, idempotent,
                 involutive, monotonic, associative, cancellative, distributive,
-                identityElement, inverseElement, absorbingElement);
+                transitive, identityElement, inverseElement, absorbingElement);
     }
 
     public OperatorContract withAssociative(boolean associative) {
         return new OperatorContract(
                 reflexive, irreflexive, antisymmetric, asymmetric, idempotent,
                 involutive, monotonic, associative, cancellative, distributive,
-                identityElement, inverseElement, absorbingElement);
+                transitive, identityElement, inverseElement, absorbingElement);
     }
 
     public OperatorContract withCancellative(boolean cancellative) {
         return new OperatorContract(
                 reflexive, irreflexive, antisymmetric, asymmetric, idempotent,
                 involutive, monotonic, associative, cancellative, distributive,
-                identityElement, inverseElement, absorbingElement);
+                transitive, identityElement, inverseElement, absorbingElement);
     }
 
     public OperatorContract withDistributive(boolean distributive) {
         return new OperatorContract(
                 reflexive, irreflexive, antisymmetric, asymmetric, idempotent,
                 involutive, monotonic, associative, cancellative, distributive,
-                identityElement, inverseElement, absorbingElement);
+                transitive, identityElement, inverseElement, absorbingElement);
+    }
+
+    public OperatorContract withTransitive(boolean transitive) {
+        return new OperatorContract(
+                reflexive, irreflexive, antisymmetric, asymmetric, idempotent,
+                involutive, monotonic, associative, cancellative, distributive,
+                transitive, identityElement, inverseElement, absorbingElement);
     }
 
     public OperatorContract withIdentityElement(boolean identityElement) {
         return new OperatorContract(
                 reflexive, irreflexive, antisymmetric, asymmetric, idempotent,
                 involutive, monotonic, associative, cancellative, distributive,
-                identityElement, inverseElement, absorbingElement);
+                transitive, identityElement, inverseElement, absorbingElement);
     }
 
     public OperatorContract withInverseElement(boolean inverseElement) {
         return new OperatorContract(
                 reflexive, irreflexive, antisymmetric, asymmetric, idempotent,
                 involutive, monotonic, associative, cancellative, distributive,
-                identityElement, inverseElement, absorbingElement);
+                transitive, identityElement, inverseElement, absorbingElement);
     }
 
     public OperatorContract withAbsorbingElement(boolean absorbingElement) {
         return new OperatorContract(
                 reflexive, irreflexive, antisymmetric, asymmetric, idempotent,
                 involutive, monotonic, associative, cancellative, distributive,
-                identityElement, inverseElement, absorbingElement);
+                transitive, identityElement, inverseElement, absorbingElement);
     }
 
     @Override
@@ -204,6 +218,7 @@ public final class OperatorContract {
                 associative == that.associative &&
                 cancellative == that.cancellative &&
                 distributive == that.distributive &&
+                transitive == that.transitive &&
                 identityElement == that.identityElement &&
                 inverseElement == that.inverseElement &&
                 absorbingElement == that.absorbingElement;
@@ -213,7 +228,7 @@ public final class OperatorContract {
     public int hashCode() {
         return Objects.hash(reflexive, irreflexive, antisymmetric, asymmetric, idempotent,
                 involutive, monotonic, associative, cancellative, distributive,
-                identityElement, inverseElement, absorbingElement);
+                transitive, identityElement, inverseElement, absorbingElement);
     }
 
     @Override
@@ -229,6 +244,7 @@ public final class OperatorContract {
                 ", associative=" + associative +
                 ", cancellative=" + cancellative +
                 ", distributive=" + distributive +
+                ", transitive=" + transitive +
                 ", identityElement=" + identityElement +
                 ", inverseElement=" + inverseElement +
                 ", absorbingElement=" + absorbingElement +

@@ -38,7 +38,7 @@ class GameDefinitionValidatorTest {
         return new OperatorContract(
                 false, false, false, false, false,
                 false, false, false, false, false,
-                false, false, false);
+                false, false, false, false);
     }
 
     private static Artifact artifact(Entity entity) {

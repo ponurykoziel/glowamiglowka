@@ -18,6 +18,7 @@ public class ContractBuilder<T> {
     private boolean associative;
     private boolean cancellative;
     private boolean distributive;
+    private boolean transitive;
     private boolean identityElement;
     private boolean inverseElement;
     private boolean absorbingElement;
@@ -77,6 +78,11 @@ public class ContractBuilder<T> {
         return this;
     }
 
+    public ContractBuilder<T> withTransitive(boolean transitive) {
+        this.transitive = transitive;
+        return this;
+    }
+
     public ContractBuilder<T> withIdentityElement(boolean identityElement) {
         this.identityElement = identityElement;
         return this;
@@ -100,7 +106,7 @@ public class ContractBuilder<T> {
         contractSetter.accept(new OperatorContract(
                 reflexive, irreflexive, antisymmetric, asymmetric, idempotent,
                 involutive, monotonic, associative, cancellative, distributive,
-                identityElement, inverseElement, absorbingElement
+                transitive, identityElement, inverseElement, absorbingElement
         ));
         return builder;
     }

@@ -72,7 +72,7 @@ public class TernaryOperatorBuilder {
             contract = new OperatorContract(
                     false, false, false, false, false,
                     false, false, false, false, false,
-                    false, false, false
+                    false, false, false, false
             );
         }
         return new TernaryOperator("F" + idProvider.getNextId(), name, List.copyOf(leftBuffer), List.copyOf(middleBuffer), List.copyOf(rightBuffer), contract);

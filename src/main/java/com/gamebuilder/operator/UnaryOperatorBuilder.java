@@ -46,7 +46,7 @@ public class UnaryOperatorBuilder {
             contract = new OperatorContract(
                     false, false, false, false, false,
                     false, false, false, false, false,
-                    false, false, false
+                    false, false, false, false
             );
         }
         return new UnaryOperator("F" + idProvider.getNextId(), name, List.copyOf(operandBuffer), contract);

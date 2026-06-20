@@ -31,7 +31,7 @@ class PaletteTest {
         operator = new UnaryOperator("F0001", "test-op", List.of(component), new OperatorContract(
                 false, false, false, false, false,
                 false, false, false, false, false,
-                false, false, false));
+                false, false, false, false));
     }
 
     @Test
