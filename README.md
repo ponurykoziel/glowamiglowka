@@ -85,7 +85,6 @@ Open `http://localhost:2157` in a browser. The Studio page lets you build a game
 | Component | `tail` | item | — |
 | Component | `wall` | item | — |
 | Component | `field` | area | — |
-
 | Operator | `occupation` | — | `body, wall` → `field` |
 | Operator | `presence` | — | `head, body, wall` → `field` |
 | Operator | `adjacency` | — | `field` → `field` |
@@ -96,6 +95,8 @@ Open `http://localhost:2157` in a browser. The Studio page lets you build a game
 
 please note that a 1D-snake cannot collide with its body. Thus collusion should not be defined as:
 
+| Type | Name | Realm | Slots |
+|---|---|---|---|
 | Operator | `collision` | — | `head` → `body, wall` |
 
 ### Validation
