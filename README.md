@@ -93,7 +93,7 @@ Open `http://localhost:2157` in a browser. The Studio page lets you build a game
 | Operator | `voiding` | — | `tail` |
 | Operator | `collision` | — | `head` → `wall` |
 
-please note that a 1D-snake cannot collide with its body. Thus collusion should not be defined as:
+please note that a 1D-snake cannot collide with its body. Thus, collusion should not be defined as:
 
 | Type | Name | Realm | Slots |
 |---|---|---|---|
