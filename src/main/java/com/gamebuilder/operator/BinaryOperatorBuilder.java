@@ -3,7 +3,6 @@ package com.gamebuilder.operator;
 import com.gamebuilder.domain.Component;
 import com.gamebuilder.utils.IdProvider;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -50,7 +49,7 @@ public class BinaryOperatorBuilder {
     }
 
     public ContractBuilder<BinaryOperatorBuilder> contract() {
-        return new ContractBuilder<>(new WeakReference<>(this), this::setContract);
+        return new ContractBuilder<>(this, this::setContract);
     }
 
     public BinaryOperator build() {

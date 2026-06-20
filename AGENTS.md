@@ -14,4 +14,5 @@ All DTOs in this project must adhere to the following rules:
 - `Component` — concrete identity object. Implements `Entity`. Carries a `String id`, `String name`, and a `Realm`.
 - `Realm` — scope/context identifier. Implements `Entity`. Carries a `String id` and `String name`.
 - `Operator` — interface for operations over components. Implements `Entity`. Built via `OperatorBuilder` chain. Declares operand count, operand list, and operator contract. Concrete types: `UnaryOperator`, `BinaryOperator`, `TernaryOperator`.
+- `OperatorContract` — Java `record` carrying 14 boolean algebraic properties (reflexive, irreflexive, antisymmetric, asymmetric, idempotent, involutive, monotonic, associative, cancellative, distributive, transitive, identity element, inverse element, absorbing element). Accessor methods use `is*` naming convention for boolean fields.
 - `Artifact` — concrete final class. Carries `String entityId` and `String description`. Not an `Entity` — references entities by ID.

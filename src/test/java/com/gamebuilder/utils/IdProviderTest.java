@@ -47,16 +47,6 @@ class IdProviderTest {
     }
 
     @Test
-    void respectsConfigLengthDynamically() {
-        AppConfig config = appConfig(4);
-        IdProvider provider = config.getIdProvider();
-        assertEquals("0001", provider.getNextId());
-
-        config.setIdLength(6);
-        assertEquals("000002", provider.getNextId());
-    }
-
-    @Test
     void concurrentAccessProducesUniqueIds() throws InterruptedException {
         AppConfig config = appConfig(4);
         IdProvider provider = config.getIdProvider();

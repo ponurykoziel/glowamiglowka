@@ -88,8 +88,8 @@ public class GameBuilderState {
         BombermanInitializer initializer = new BombermanInitializer(palette, appConfig);
         initializer.populate();
         BijectMap<String, Artifact> artifacts = initializer.populateArtifacts();
-        for (var entry : artifacts.keySet()) {
-            artifactBuffer.put(entry, artifacts.getByKey(entry));
+        for (var artifact : artifacts.values()) {
+            artifactBuffer.put(artifact.getEntityId(), artifact);
         }
     }
 }

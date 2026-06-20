@@ -95,9 +95,9 @@ public class GameBuilderController {
 
     @POST
     @Path("/components")
-    public Response addComponent(Map<String, String> body) {
-        String name = InputSanitizer.sanitize(body.get("name"));
-        String realmId = InputSanitizer.sanitize(body.get("realmId"));
+    public Response addComponent(Map<String, Object> body) {
+        String name = InputSanitizer.sanitizeField(body, "name");
+        String realmId = InputSanitizer.sanitizeField(body, "realmId");
         if (name == null || name.isBlank()) {
             return Response.status(Response.Status.BAD_REQUEST)
                     .entity(Map.of("error", "name is required"))
@@ -133,7 +133,7 @@ public class GameBuilderController {
     @Path("/operators")
     @SuppressWarnings("unchecked")
     public Response addOperator(Map<String, Object> body) {
-        String name = InputSanitizer.sanitize((String) body.get("name"));
+        String name = InputSanitizer.sanitizeField(body, "name");
         if (name == null || name.isBlank()) {
             return Response.status(Response.Status.BAD_REQUEST)
                     .entity(Map.of("error", "name is required"))
@@ -206,9 +206,9 @@ public class GameBuilderController {
 
     @POST
     @Path("/artifacts")
-    public Response addArtifact(Map<String, String> body) {
-        String entityId = InputSanitizer.sanitize(body.get("entityId"));
-        String description = InputSanitizer.sanitize(body.get("description"));
+    public Response addArtifact(Map<String, Object> body) {
+        String entityId = InputSanitizer.sanitizeField(body, "entityId");
+        String description = InputSanitizer.sanitizeField(body, "description");
         if (entityId == null || entityId.isBlank()) {
             return Response.status(Response.Status.BAD_REQUEST)
                     .entity(Map.of("error", "entityId is required"))
@@ -249,8 +249,8 @@ public class GameBuilderController {
 
     @POST
     @Path("/gamedef")
-    public Response buildGameDefinition(Map<String, String> body) {
-        String id = InputSanitizer.sanitize(body.get("id"));
+    public Response buildGameDefinition(Map<String, Object> body) {
+        String id = InputSanitizer.sanitizeField(body, "id");
         if (id == null || id.isBlank()) {
             return Response.status(Response.Status.BAD_REQUEST)
                     .entity(Map.of("error", "id is required"))
@@ -285,7 +285,7 @@ public class GameBuilderController {
     @Path("/compose")
     @SuppressWarnings("unchecked")
     public Response compose(Map<String, Object> body) {
-        String id = InputSanitizer.sanitize((String) body.get("id"));
+        String id = InputSanitizer.sanitizeField(body, "id");
         if (id == null || id.isBlank()) {
             return Response.status(Response.Status.BAD_REQUEST)
                     .entity(Map.of("error", "id is required"))
@@ -326,8 +326,8 @@ public class GameBuilderController {
 
     @POST
     @Path("/ask/ai")
-    public Response askAi(Map<String, String> body) {
-        String prompt = InputSanitizer.sanitize(body.get("prompt"));
+    public Response askAi(Map<String, Object> body) {
+        String prompt = InputSanitizer.sanitizeField(body, "prompt");
         if (prompt == null || prompt.isBlank()) {
             return Response.status(Response.Status.BAD_REQUEST)
                     .entity(Map.of("error", "prompt is required"))

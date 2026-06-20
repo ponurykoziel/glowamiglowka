@@ -1,11 +1,10 @@
 package com.gamebuilder.operator;
 
-import java.lang.ref.WeakReference;
 import java.util.Objects;
 import java.util.function.Consumer;
 
 public class ContractBuilder<T> {
-    private final WeakReference<T> owner;
+    private final T owner;
     private final Consumer<OperatorContract> contractSetter;
 
     private boolean reflexive;
@@ -23,7 +22,7 @@ public class ContractBuilder<T> {
     private boolean inverseElement;
     private boolean absorbingElement;
 
-    public ContractBuilder(WeakReference<T> owner, Consumer<OperatorContract> contractSetter) {
+    public ContractBuilder(T owner, Consumer<OperatorContract> contractSetter) {
         this.owner = Objects.requireNonNull(owner, "owner must not be null");
         this.contractSetter = Objects.requireNonNull(contractSetter, "contractSetter must not be null");
     }
@@ -99,15 +98,11 @@ public class ContractBuilder<T> {
     }
 
     public T buildContract() {
-        T builder = owner.get();
-        if (builder == null) {
-            throw new IllegalStateException("Owner builder has been garbage collected");
-        }
         contractSetter.accept(new OperatorContract(
                 reflexive, irreflexive, antisymmetric, asymmetric, idempotent,
                 involutive, monotonic, associative, cancellative, distributive,
                 transitive, identityElement, inverseElement, absorbingElement
         ));
-        return builder;
+        return owner;
     }
 }

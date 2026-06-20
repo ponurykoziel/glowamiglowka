@@ -4,6 +4,8 @@ import com.gamebuilder.domain.Artifact;
 import com.gamebuilder.domain.Component;
 import com.gamebuilder.domain.Realm;
 import com.gamebuilder.gamedef.GameDefinition;
+import com.gamebuilder.gamedef.GameDefinitionValidator;
+import com.gamebuilder.gamedef.ValidationResult;
 import com.gamebuilder.operator.*;
 import com.gamebuilder.palette.Palette;
 import com.gamebuilder.utils.BijectMap;
@@ -312,74 +314,11 @@ public class GameBuilderService {
     }
 
     private ValidationResultDto validateDefinition(GameDefinition gd) {
-        List<String> errors = new ArrayList<>();
-
-        BijectMap<String, Component> components = gd.getComponents();
-        BijectMap<String, Realm> realms = gd.getRealms();
-        BijectMap<String, Operator> operators = gd.getOperators();
-        BijectMap<String, Artifact> artifacts = gd.getArtifacts();
-
-        java.util.Set<String> allIds = new java.util.HashSet<>();
-        for (String id : components.keySet()) {
-            if (!allIds.add(id)) {
-                errors.add("Duplicate entity ID across maps: " + id);
-            }
-        }
-        for (String id : realms.keySet()) {
-            if (!allIds.add(id)) {
-                errors.add("Duplicate entity ID across maps: " + id);
-            }
-        }
-        for (String id : operators.keySet()) {
-            if (!allIds.add(id)) {
-                errors.add("Duplicate entity ID across maps: " + id);
-            }
-        }
-
-        for (Component c : components.values()) {
-            Realm realm = c.getRealm();
-            if (realm == null || !realms.containsKey(realm.getId())) {
-                errors.add("Component '" + c.getName() + "' (" + c.getId() + ") references missing realm: " + (realm != null ? realm.getId() : "null"));
-            }
-        }
-
-        for (Operator op : operators.values()) {
-            for (int slotIdx = 0; slotIdx < op.getOperands().size(); slotIdx++) {
-                List<Component> slot = op.getOperands().get(slotIdx);
-                for (Component operand : slot) {
-                    if (!components.containsKey(operand.getId())) {
-                        errors.add("Operator '" + op.getName() + "' (" + op.getId() + ") slot " + slotIdx + " references missing component: " + operand.getId());
-                    }
-                }
-            }
-        }
-
-        for (String entityId : artifacts.keySet()) {
-            if (gd.findEntity(entityId) == null) {
-                errors.add("Artifact references missing entity: " + entityId);
-            }
-        }
-
-        for (String id : components.keySet()) {
-            if (!artifacts.containsKey(id)) {
-                errors.add("Component '" + components.getByKey(id).getName() + "' (" + id + ") has no artifact");
-            }
-        }
-        for (String id : realms.keySet()) {
-            if (!artifacts.containsKey(id)) {
-                errors.add("Realm '" + realms.getByKey(id).getName() + "' (" + id + ") has no artifact");
-            }
-        }
-        for (String id : operators.keySet()) {
-            if (!artifacts.containsKey(id)) {
-                errors.add("Operator '" + operators.getByKey(id).getName() + "' (" + id + ") has no artifact");
-            }
-        }
-
-        if (errors.isEmpty()) {
+        ValidationResult result = new GameDefinitionValidator(gd).validate();
+        if (result.isValid()) {
             return ValidationResultDto.valid();
         }
-        return ValidationResultDto.invalid(errors);
+        return ValidationResultDto.invalid(result.getErrors());
     }
 
     // ── DTO conversion helpers ───────────────────────────────────────

@@ -46,6 +46,11 @@ public final class Palette {
         return operators.getByKey(id);
     }
 
+    // The instanceof cascade below is the correct approach for this PoC.
+    // A visitor pattern would be over-engineered here: the entity type set
+    // (Component, Realm, Operator) is fixed and extremely unlikely to expand,
+    // and adding a visitor would ripple through half the source code for no
+    // practical benefit in a simple proof of concept.
     public void add(Entity entity) {
         if (entity instanceof Component) {
             components.put(entity.getId(), (Component) entity);

@@ -41,7 +41,7 @@ Builds and starts the application in Quarkus dev mode (hot reload, stuff)
 Supply a properties file at runtime:
 
 ```bash
-QUARKUS_CONFIG_LOCATIONS=prod.application.properties java -jar target/gamebuilder-1.0-SNAPSHOT-runner.jar
+QUARKUS_CONFIG_LOCATIONS=prod.application.properties java -jar target/gamebuilder-0.21.37-runner.jar
 ```
 
 ### Configuration properties
@@ -54,7 +54,7 @@ QUARKUS_CONFIG_LOCATIONS=prod.application.properties java -jar target/gamebuilde
 | `ollama.api.key` | `ollama` | API key sent as `Authorization: Bearer` |
 | `ollama.model` | `llama3` | Model name passed in chat completion requests |
 | `ollama.cooldown.ms` | `5000` | Minimum delay between successive AI requests |
-| `ollama.request.cap` | `2000` | Maximum total character count of the full prompt sent to Ollama (palette context + user prompt) |
+| `ollama.request.cap` | `2000` | Maximum count of successful AI requests before further requests are rejected |
 | `ollama.max.user.prompt.length` | `1000` | Maximum length of the user's text in the Ask AI box |
 
 

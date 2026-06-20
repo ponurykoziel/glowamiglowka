@@ -3,7 +3,6 @@ package com.gamebuilder.ai;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.List;
 
 public final class LlmRealm {
     private final String name;

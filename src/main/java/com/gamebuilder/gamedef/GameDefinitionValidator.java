@@ -6,6 +6,7 @@ import com.gamebuilder.domain.Component;
 import com.gamebuilder.domain.Realm;
 import com.gamebuilder.operator.Operator;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -18,35 +19,44 @@ public final class GameDefinitionValidator {
         this.gameDefinition = Objects.requireNonNull(gameDefinition, "gameDefinition must not be null");
     }
 
-    public boolean validateCoherence() {
+    public ValidationResult validate() {
         BijectMap<String, Component> components = gameDefinition.getComponents();
         BijectMap<String, Realm> realms = gameDefinition.getRealms();
         BijectMap<String, Operator> operators = gameDefinition.getOperators();
         BijectMap<String, Artifact> artifacts = gameDefinition.getArtifacts();
 
+        List<String> errors = new ArrayList<>();
+
         Set<String> allEntityIds = new HashSet<>();
         for (String id : components.keySet()) {
-            if (!allEntityIds.add(id)) return false;
+            if (!allEntityIds.add(id)) {
+                errors.add("Duplicate entity ID across maps: " + id);
+            }
         }
         for (String id : realms.keySet()) {
-            if (!allEntityIds.add(id)) return false;
+            if (!allEntityIds.add(id)) {
+                errors.add("Duplicate entity ID across maps: " + id);
+            }
         }
         for (String id : operators.keySet()) {
-            if (!allEntityIds.add(id)) return false;
-        }
-
-        for (Component component : components.values()) {
-            Realm realm = component.getRealm();
-            if (realm == null || !realms.containsKey(realm.getId())) {
-                return false;
+            if (!allEntityIds.add(id)) {
+                errors.add("Duplicate entity ID across maps: " + id);
             }
         }
 
-        for (Operator operator : operators.values()) {
-            for (List<Component> overload : operator.getOperands()) {
-                for (Component operand : overload) {
+        for (Component c : components.values()) {
+            Realm realm = c.getRealm();
+            if (realm == null || !realms.containsKey(realm.getId())) {
+                errors.add("Component '" + c.getName() + "' (" + c.getId() + ") references missing realm: " + (realm != null ? realm.getId() : "null"));
+            }
+        }
+
+        for (Operator op : operators.values()) {
+            for (int slotIdx = 0; slotIdx < op.getOperands().size(); slotIdx++) {
+                List<Component> slot = op.getOperands().get(slotIdx);
+                for (Component operand : slot) {
                     if (!components.containsKey(operand.getId())) {
-                        return false;
+                        errors.add("Operator '" + op.getName() + "' (" + op.getId() + ") slot " + slotIdx + " references missing component: " + operand.getId());
                     }
                 }
             }
@@ -54,26 +64,33 @@ public final class GameDefinitionValidator {
 
         for (String entityId : artifacts.keySet()) {
             if (gameDefinition.findEntity(entityId) == null) {
-                return false;
+                errors.add("Artifact references missing entity: " + entityId);
             }
         }
 
-        for (String entityId : components.keySet()) {
-            if (!artifacts.containsKey(entityId)) {
-                return false;
+        for (String id : components.keySet()) {
+            if (!artifacts.containsKey(id)) {
+                errors.add("Component '" + components.getByKey(id).getName() + "' (" + id + ") has no artifact");
             }
         }
-        for (String entityId : realms.keySet()) {
-            if (!artifacts.containsKey(entityId)) {
-                return false;
+        for (String id : realms.keySet()) {
+            if (!artifacts.containsKey(id)) {
+                errors.add("Realm '" + realms.getByKey(id).getName() + "' (" + id + ") has no artifact");
             }
         }
-        for (String entityId : operators.keySet()) {
-            if (!artifacts.containsKey(entityId)) {
-                return false;
+        for (String id : operators.keySet()) {
+            if (!artifacts.containsKey(id)) {
+                errors.add("Operator '" + operators.getByKey(id).getName() + "' (" + id + ") has no artifact");
             }
         }
 
-        return true;
+        if (errors.isEmpty()) {
+            return ValidationResult.ok();
+        }
+        return ValidationResult.fail(errors);
+    }
+
+    public boolean validateCoherence() {
+        return validate().isValid();
     }
 }

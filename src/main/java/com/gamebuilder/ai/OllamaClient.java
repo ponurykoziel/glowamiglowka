@@ -1,5 +1,7 @@
 package com.gamebuilder.ai;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
@@ -18,6 +20,7 @@ import java.util.concurrent.atomic.AtomicLong;
 public class OllamaClient {
 
     private static final Logger LOG = Logger.getLogger(OllamaClient.class);
+    private static final ObjectMapper MAPPER = new ObjectMapper();
 
     private final String host;
     private final String apiKey;
@@ -101,24 +104,15 @@ public class OllamaClient {
     }
 
     private String extractContent(String responseBody) {
-        // OpenAI-style response: {"choices":[{"message":{"content":"..."}}]}
         try {
-            int contentIdx = responseBody.indexOf("\"content\":\"");
-            if (contentIdx < 0) return responseBody;
-            int start = contentIdx + 11;
-            int end = start;
-            while (end < responseBody.length()) {
-                char c = responseBody.charAt(end);
-                if (c == '"' && (end == start || responseBody.charAt(end - 1) != '\\')) {
-                    break;
-                }
-                end++;
+            JsonNode root = MAPPER.readTree(responseBody);
+            JsonNode content = root.path("choices").path(0).path("message").path("content");
+            if (content.isMissingNode()) {
+                return responseBody;
             }
-            return responseBody.substring(start, end)
-                    .replace("\\n", "\n")
-                    .replace("\\\"", "\"")
-                    .replace("\\\\", "\\");
+            return content.asText();
         } catch (Exception e) {
+            LOG.warn("Failed to parse Ollama response as JSON, returning raw body", e);
             return responseBody;
         }
     }

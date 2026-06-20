@@ -6,7 +6,7 @@ import java.util.Objects;
 
 public final class AppConfig {
     private final IdProvider idProvider;
-    private int idLength;
+    private final int idLength;
 
     public AppConfig(int idLength) {
         if (idLength < 1) {
@@ -22,12 +22,5 @@ public final class AppConfig {
 
     public int getIdLength() {
         return idLength;
-    }
-
-    public void setIdLength(int idLength) {
-        if (idLength < 1) {
-            throw new IllegalArgumentException("idLength must be >= 1");
-        }
-        this.idLength = idLength;
     }
 }

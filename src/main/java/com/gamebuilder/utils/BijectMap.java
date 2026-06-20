@@ -10,17 +10,14 @@ import java.util.concurrent.ConcurrentHashMap;
 public class BijectMap<K, V> {
     private final ConcurrentHashMap<K, V> keyToValue = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<V, K> valueToKey = new ConcurrentHashMap<>();
-    private final Object monitor = new Object();
 
     public BijectMap() {
     }
 
     public BijectMap(BijectMap<K, V> other) {
         Objects.requireNonNull(other, "other must not be null");
-        synchronized (other.monitor) {
-            this.keyToValue.putAll(other.keyToValue);
-            this.valueToKey.putAll(other.valueToKey);
-        }
+        this.keyToValue.putAll(other.keyToValue);
+        this.valueToKey.putAll(other.valueToKey);
     }
 
     public V getByKey(K key) {
@@ -50,59 +47,51 @@ public class BijectMap<K, V> {
     public V put(K key, V value) {
         Objects.requireNonNull(key, "key must not be null");
         Objects.requireNonNull(value, "value must not be null");
-        synchronized (monitor) {
-            V oldValue = keyToValue.remove(key);
-            if (oldValue != null) {
-                valueToKey.remove(oldValue);
-            }
 
-            K oldKey = valueToKey.remove(value);
-            if (oldKey != null) {
-                keyToValue.remove(oldKey);
-            }
-
-            keyToValue.put(key, value);
-            valueToKey.put(value, key);
-            return oldValue;
+        // Atomically remove old reverse mapping for the value (if any),
+        // then remove old forward mapping for the key (if any), then insert.
+        K oldKeyForValue = valueToKey.remove(value);
+        if (oldKeyForValue != null && !oldKeyForValue.equals(key)) {
+            keyToValue.remove(oldKeyForValue);
         }
+
+        V oldValue = keyToValue.put(key, value);
+        if (oldValue != null && !oldValue.equals(value)) {
+            valueToKey.remove(oldValue);
+        }
+
+        valueToKey.put(value, key);
+        return oldValue;
     }
 
     public void putAll(BijectMap<K, V> other) {
         Objects.requireNonNull(other, "other must not be null");
-        synchronized (other.monitor) {
-            for (Map.Entry<K, V> entry : other.keyToValue.entrySet()) {
-                put(entry.getKey(), entry.getValue());
-            }
+        for (Map.Entry<K, V> entry : other.keyToValue.entrySet()) {
+            put(entry.getKey(), entry.getValue());
         }
     }
 
     public V removeByKey(K key) {
         Objects.requireNonNull(key, "key must not be null");
-        synchronized (monitor) {
-            V value = keyToValue.remove(key);
-            if (value != null) {
-                valueToKey.remove(value);
-            }
-            return value;
+        V value = keyToValue.remove(key);
+        if (value != null) {
+            valueToKey.remove(value);
         }
+        return value;
     }
 
     public K removeByValue(V value) {
         Objects.requireNonNull(value, "value must not be null");
-        synchronized (monitor) {
-            K key = valueToKey.remove(value);
-            if (key != null) {
-                keyToValue.remove(key);
-            }
-            return key;
+        K key = valueToKey.remove(value);
+        if (key != null) {
+            keyToValue.remove(key);
         }
+        return key;
     }
 
     public void clear() {
-        synchronized (monitor) {
-            keyToValue.clear();
-            valueToKey.clear();
-        }
+        keyToValue.clear();
+        valueToKey.clear();
     }
 
     public int size() {
