@@ -1,6 +1,6 @@
 # GameBuilder
 
-A formal game definition studio — define game ontologies (realms, components, operators) with algebraic contracts, compose definitions, validate coherence, and get AI assistance via Ollama.
+A primitive game definition studio PoC — define game ontologies (realms, components, operators) with algebraic contracts, compose definitions, validate coherence, and get AI assistance via Ollama.
 
 ---
 
