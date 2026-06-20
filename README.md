@@ -1,3 +1,5 @@
+! This repo is entirely AI-generated.
+
 # GameBuilder
 
 A primitive game definition studio PoC — define game ontologies (realms, components, operators) with algebraic contracts, compose definitions, validate coherence, and get AI assistance via Ollama.
