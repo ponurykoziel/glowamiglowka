@@ -427,8 +427,24 @@ public final class DashboardPage {
 
                 function buildContractGrid() {
                     var props = ['reflexive','irreflexive','antisymmetric','asymmetric','idempotent','involutive','monotonic','associative','cancellative','distributive','transitive','identityElement','inverseElement','absorbingElement'];
+                    var desc = {
+                        reflexive: 'Every element relates to itself (aRa)',
+                        irreflexive: 'No element relates to itself',
+                        antisymmetric: 'If aRb and bRa, then a = b',
+                        asymmetric: 'If aRb, then b never relates to a',
+                        idempotent: 'Applying twice equals applying once',
+                        involutive: 'Applying twice returns to the start',
+                        monotonic: 'Preserves ordering',
+                        associative: 'Grouping of operands doesn\u2019t matter',
+                        cancellative: 'Equal results imply equal inputs',
+                        distributive: 'Spreads over another operation',
+                        transitive: 'If aRb and bRc, then aRc',
+                        identityElement: 'Has a neutral element that leaves operands unchanged',
+                        inverseElement: 'Has an element that undoes the operation',
+                        absorbingElement: 'Has an element that dominates all others'
+                    };
                     document.getElementById('contract-grid').innerHTML = props.map(function(p) {
-                        return `<label><input type="checkbox" id="contract-${p}"> ${p}</label>`;
+                        return `<label title="${desc[p]}"><input type="checkbox" id="contract-${p}"> ${p}</label>`;
                     }).join('');
                 }
 
